@@ -1,11 +1,14 @@
 sudo: required
 language: java
+jdk:
+  - openjdk11
 services:
   - docker
 
 env:
   global:
     - SHA=$(git rev-parse HEAD)
+    - appversion=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
 
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -15,3 +18,5 @@ after_success:
 
 script:
   - mvn clean install
+  - docker build -t dhananjay12/demo-app:$appversion .
+  - docker push dhananjay12/demo-app:$appversion
