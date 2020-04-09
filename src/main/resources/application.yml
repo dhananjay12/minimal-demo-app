@@ -1,7 +1,26 @@
 app:
+  fortune:
+    source: db
   fortunes:
       - Today it's up to you to create the peacefulness you long for.
       - Enjoy the good luck a companion brings you.
       - Hard work pays off in the future, laziness pays off now.
       - If you have something good in your life, don't let it go!
       - A chance meeting opens new doors to success and friendship.
+
+spring:
+  datasource:
+    platform: mariadb
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/test?autoReconnect=true
+    username: root
+    password: root
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: 'create-drop'
+    show-sql: true
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
