@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-    value = "app.fortune.source", havingValue = "db")
+    value = "app.fortune.source", havingValue = "db", matchIfMissing = true)
 public class FortuneServiceDb implements FortuneService {
 
      private final FortuneRepository fortuneRepository;

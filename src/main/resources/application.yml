@@ -1,6 +1,6 @@
 app:
   fortune:
-    source: file
+    source: db
   fortunes:
       - Today it's up to you to create the peacefulness you long for.
       - Enjoy the good luck a companion brings you.

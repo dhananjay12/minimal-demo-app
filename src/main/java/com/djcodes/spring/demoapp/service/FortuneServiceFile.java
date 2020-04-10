@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-    value = "app.fortune.source", havingValue = "file", matchIfMissing = true)
+    value = "app.fortune.source", havingValue = "file")
 public class FortuneServiceFile implements FortuneService {
 
     private final FortuneFile fortuneFile;
