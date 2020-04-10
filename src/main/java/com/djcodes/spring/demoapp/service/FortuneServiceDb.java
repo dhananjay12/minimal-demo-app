@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(
-    value = "app.fortune.source", havingValue = "db", matchIfMissing = true)
+    value = "app.fortune.source", havingValue = "db")
 public class FortuneServiceDb implements FortuneService {
 
      private final FortuneRepository fortuneRepository;
@@ -18,7 +18,7 @@ public class FortuneServiceDb implements FortuneService {
     @Override
     public String getFortune() {
         int numberOfRows = Long.valueOf(fortuneRepository.count()).intValue();
-        int randomNumber = 1 + new Random().nextInt(numberOfRows);
+        int randomNumber = new Random().nextInt(numberOfRows);
         return fortuneRepository.findById(randomNumber).get().getText();
     }
 }

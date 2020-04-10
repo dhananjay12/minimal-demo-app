@@ -1,6 +1,6 @@
 app:
   fortune:
-    source: db
+    source: file
   fortunes:
       - Today it's up to you to create the peacefulness you long for.
       - Enjoy the good luck a companion brings you.
@@ -21,6 +21,6 @@ spring:
     hibernate:
       ddl-auto: 'create-drop'
     show-sql: true
-    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties.hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect
 
 
