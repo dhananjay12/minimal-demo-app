@@ -1,4 +1,4 @@
-# Minimal Demo App with badges
+# Minimal Demo App
 
 [![Build Status](https://travis-ci.org/dhananjay12/demo-app.svg?branch=master)](https://travis-ci.org/dhananjay12/demo-app)
 [![codecov](https://codecov.io/gh/dhananjay12/demo-app/branch/master/graph/badge.svg)](https://codecov.io/gh/dhananjay12/demo-app)
@@ -7,4 +7,6 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=dhananjay12_demo-app&metric=sqale_index)](https://sonarcloud.io/dashboard?id=dhananjay12_demo-app)
 
 
-Simple REST API
+## Simple REST API using Spring Boot
+
+Companion app in learning helm
