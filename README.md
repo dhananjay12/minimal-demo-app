@@ -8,3 +8,15 @@
 
 
 Simple REST API
+
+## Open API
+
+```
+http://localhost:8080/v3/api-docs
+```
+For yml open
+
+```
+http://localhost:8080/v3/api-docs.yml
+```
+
