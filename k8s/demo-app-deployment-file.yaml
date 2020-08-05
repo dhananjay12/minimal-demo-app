@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app-file
+  template:
+    metadata:
+      labels:
+        app: demo-app-file
+    spec:
+      containers:
+        - env:
+            - name: SPRING_CONFIG_ADDITIONAL-LOCATION
+              value: /myconfig/
+          image: dhananjay12/demo-app:3.0.0
+          imagePullPolicy: Always
+          name: demo-app
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+          - mountPath: /myconfig/
+            name: config
+      volumes:
+        - name: config
+          configMap:
+            name: app-config
+            items:
+            - key: application.yml
+              path: application.yml
+      restartPolicy: Always
+status: {}

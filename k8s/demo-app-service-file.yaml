@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: demo-app-file
+  name: demo-app-file
+spec:
+  type: LoadBalancer #default ClusterIP
+  ports:
+    - protocol: "TCP" #default anyways
+      port: 8081
+      targetPort: 8080
+  selector:
+    app: demo-app-file
