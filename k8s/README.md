@@ -8,9 +8,22 @@ provide the application.yml with a config-map.
 ```
 kubectl create configmap app-config --from-file=config-map\application.yml
 ```
+To see the output you could use 
+
+```
+kubectl create configmap --dry-run app-config --from-file=config-map\application.yml --output yaml
+```
+
 ## Run
 ```
 kubectl apply -f .
+```
+
+## Check
+
+```
+kubectl get configmap
+kubectl describe configmap <name>
 ```
 
 ## Cleanup
