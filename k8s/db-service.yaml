@@ -5,6 +5,7 @@ metadata:
     name: db
   name: db
 spec:
+  type: LoadBalancer #default ClusterIP
   ports:
     - name: db
       port: 27017
