@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  demo-app:
+    image: local:latest
+    environment:
+      - SPRING_CONFIG_ADDITIONAL-LOCATION=/config/
+    volumes:
+      - ./:/config
+    ports:
+      - "8080:8080"
