@@ -27,4 +27,5 @@ jobs:
             docker pull dhananjay12/demo-app:latest
             docker tag dhananjay12/demo-app:latest registry.heroku.com/demo-app-github/web
             docker push registry.heroku.com/demo-app-github/web
+            heroku container:run web --app $HEROKU_APP_NAME --port=8080
             heroku container:release web --app $HEROKU_APP_NAME
