@@ -61,9 +61,9 @@ jobs:
         run: docker push ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}}
 
       - name: Retag the image to latest
-        if: ${{ github.ref == 'master'}}
+        if: ${{ github.ref == 'refs/heads/master'}}
         run: docker tag ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}} ${{steps.vars.outputs.image}}:latest
 
       - name: Retag the image to latest
-        if: ${{ github.ref == 'master'}}
+        if: ${{ github.ref == 'refs/heads/master'}}
         run: docker push ${{steps.vars.outputs.image}}:latest
