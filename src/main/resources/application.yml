@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:8080}
+
 app:
   fortune:
     source: file
@@ -7,6 +10,11 @@ app:
       - Hard work pays off in the future, laziness pays off now.
       - If you have something good in your life, don't let it go!
       - A chance meeting opens new doors to success and friendship.
+      - You will have good luck and overcome many hardships.
+      - Your energy returns and you will get things done.
+      - Being alone and being lonely are two different things.
+      - Life is to you a dashing and bold adventure.
+      - Dispel negativity through creative activities.
 
 logging:
   level:

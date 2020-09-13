@@ -79,9 +79,8 @@ jobs:
 #            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 #            HEROKU_APP_NAME: demo-app-github
 #        run : |
-#            docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
+#            docker login --username=_ --password $HEROKU_API_KEY registry.heroku.com
 #            heroku container:login
-#            heroku create
 #            docker pull dhananjay12/demo-app:latest
 #            docker tag dhananjay12/demo-app:latest registry.heroku.com/demo-app-github/web
 #            docker push registry.heroku.com/demo-app-github/web
