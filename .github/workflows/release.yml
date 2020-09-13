@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0.x
-        run: mvn clean install -Dmaven.test.skip=true -DskipITs -DskipTests
+      - run: mvn clean install -Dmaven.test.skip=true -DskipITs -DskipTests
 
       - name: Prepare variables
         id: vars
