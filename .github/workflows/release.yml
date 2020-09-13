@@ -67,3 +67,27 @@ jobs:
       - name: Retag the image to latest
         if: ${{ github.ref == 'refs/heads/master'}}
         run: docker push ${{steps.vars.outputs.image}}:latest
+
+  deploy:
+    needs: test,docker
+    if: ${{ github.ref == 'refs/heads/master'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.x
+      - run: mvn clean install -Dmaven.test.skip=true -DskipITs -DskipTests
+
+      - name: Deploy to Heroku
+        env :
+            HEROKU_REGISTRY_URL: registry.heroku.com
+            HEROKU_API_KEY : ${{ secrets.HEROKU_API_KEY }}
+        run : |
+            docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
+            heroku container:login
+            docker tag dhananjay12/demo-app:latest $HEROKU_REGISTRY_URL/dhananjay12/demo-app
+            heroku container:release demo-app-github --app dhananjay12/demo-app
