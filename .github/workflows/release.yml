@@ -70,6 +70,7 @@ jobs:
 
 #  deploy:
 #    if: ${{ github.ref == 'refs/heads/master'}}
+#    needs: docker
 #    runs-on: ubuntu-latest
 #    steps:
 #      - name: Deploy to Heroku
