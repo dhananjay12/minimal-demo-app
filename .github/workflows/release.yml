@@ -73,9 +73,6 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master'}}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
       - name: Deploy to Heroku
         env :
             HEROKU_REGISTRY_URL: registry.heroku.com
@@ -84,6 +81,5 @@ jobs:
             docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
             heroku container:login
             docker pull dhananjay12/demo-app:latest
-            docker tag dhananjay12/demo-app:latest $HEROKU_REGISTRY_URL/dhananjay12/demo-app
-            docker push $HEROKU_REGISTRY_URL/dhananjay12/demo-app
+            docker container:push web --app dhananjay12/demo-app
             heroku container:release demo-app-github --app dhananjay12/demo-app
