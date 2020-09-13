@@ -1,3 +1,4 @@
+# PORT is required for heroku deployment
 server:
   port: ${PORT:8080}
 
