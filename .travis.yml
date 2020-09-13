@@ -18,5 +18,5 @@ after_success:
 
 script:
   - mvn clean install
-  - docker build -t dhananjay12/demo-app:$appversion .
-  - docker push dhananjay12/demo-app:$appversion
+  - docker build -t dhananjay12/demo-app:$appversion-travis .
+  - docker push dhananjay12/demo-app:$appversion-travis
