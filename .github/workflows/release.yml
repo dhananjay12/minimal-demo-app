@@ -76,12 +76,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Build
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11.0.x
-      - run: mvn clean install -Dmaven.test.skip=true -DskipITs -DskipTests
-
       - name: Deploy to Heroku
         env :
             HEROKU_REGISTRY_URL: registry.heroku.com
