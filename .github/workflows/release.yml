@@ -69,7 +69,7 @@ jobs:
         run: docker push ${{steps.vars.outputs.image}}:latest
 
   deploy:
-    needs: test,docker
+    needs: [test,docker]
     if: ${{ github.ref == 'refs/heads/master'}}
     runs-on: ubuntu-latest
     steps:
