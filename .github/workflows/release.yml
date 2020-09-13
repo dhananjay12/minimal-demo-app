@@ -83,6 +83,7 @@ jobs:
         run : |
             docker login --username=_ --password $HEROKU_API_KEY $HEROKU_REGISTRY_URL
             heroku container:login
+            docker pull dhananjay12/demo-app:latest
             docker tag dhananjay12/demo-app:latest $HEROKU_REGISTRY_URL/dhananjay12/demo-app
             docker push $HEROKU_REGISTRY_URL/dhananjay12/demo-app
             heroku container:release demo-app-github --app dhananjay12/demo-app
