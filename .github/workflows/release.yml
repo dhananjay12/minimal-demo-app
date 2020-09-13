@@ -45,12 +45,12 @@ jobs:
       - name: Login to DockerHub
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Build and tag Docker image
-        run: docker build . --file Dockerfile --tag ${{steps.vars.outputs.name}}:${{steps.vars.outputs.tag}}
+        run: docker build . --file Dockerfile --tag ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}}
       - name: Push the tagged Docker image
-        run: docker push ${{steps.vars.outputs.name}}:${{steps.vars.outputs.tag}}
+        run: docker push ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}}
       - name: Retag the image to latest
         if: ${{ github.ref == 'master'}}
-        run: docker tag ${{steps.vars.outputs.name}}:${{steps.vars.outputs.tag}} ${{steps.vars.outputs.name}}:latest
+        run: docker tag ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}} ${{steps.vars.outputs.image}}:latest
       - name: Retag the image to latest
         if: ${{ github.ref == 'master'}}
-        run: docker push ${{steps.vars.outputs.name}}:latest
+        run: docker push ${{steps.vars.outputs.image}}:latest
