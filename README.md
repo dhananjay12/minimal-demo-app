@@ -16,9 +16,5 @@ Companion app in learning helm
 
 ```
 http://localhost:8080/v3/api-docs
-```
-For yml open
-
-```
-http://localhost:8080/v3/api-docs.yml
+http://localhost:8080/swagger-ui/index.html
 ```

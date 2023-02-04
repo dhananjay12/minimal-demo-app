@@ -7,81 +7,61 @@ on:
   push:
     branches:
       - master
-      - release/*
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # test against latest update of each major Java version, as well as specific updates of LTS versions:
-        java: [11.0.x, 13]
-    # This will loop based on above values
-    name: Java ${{ matrix.java }} check
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup java ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/checkout@v3
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: ${{ matrix.java }}
-      - run: mvn -B verify
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Build with Maven
+        run: mvn clean verify
+
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+      # Make sure automatic scanning of the project in sonarcloud UI is disable. It can only do via pull or push
+      - name: Sonar Cloud scan
+        run: |
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+          -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.host.url=https://sonarcloud.io
 
   docker:
-
-    needs: test # Dont run before test job is successful. Note each job runs in a fresh instance of a virtual environment. So there is no sharing
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build
-        uses: actions/setup-java@v1
+        uses: actions/checkout@v3
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: 11.0.x
-      - run: mvn clean install -Dmaven.test.skip=true -DskipITs -DskipTests
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       - name: Prepare variables
         id: vars
         run: |
-          DOCKER_IMAGE=dhananjay12/demo-app
-          DOCKER_TAG=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo ::set-output name=image::${DOCKER_IMAGE}
-          echo ::set-output name=tag::${DOCKER_TAG}
+          mvn -Dmaven.test.skip=true package jib:build -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-      - name: Build and tag Docker image
-        run: docker build . --file Dockerfile --tag ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}}
 
-      - name: Push the tagged Docker image
-        run: docker push ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}}
 
-      - name: Retag the image to latest
-        if: ${{ github.ref == 'refs/heads/master'}}
-        run: docker tag ${{steps.vars.outputs.image}}:${{steps.vars.outputs.tag}} ${{steps.vars.outputs.image}}:latest
-
-      - name: Retag the image to latest
-        if: ${{ github.ref == 'refs/heads/master'}}
-        run: docker push ${{steps.vars.outputs.image}}:latest
-
-  deploy:
-    if: ${{ github.ref == 'refs/heads/master'}}
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Heroku
-        env :
-            HEROKU_REGISTRY_URL: registry.heroku.com
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-            HEROKU_APP_NAME: demo-app-github
-        run : |
-            docker login --username=_ --password $HEROKU_API_KEY registry.heroku.com
-            heroku container:login
-            docker pull dhananjay12/demo-app:latest
-            docker tag dhananjay12/demo-app:latest registry.heroku.com/$HEROKU_APP_NAME/web
-            docker push registry.heroku.com/$HEROKU_APP_NAME/web
-            heroku container:release web --app $HEROKU_APP_NAME
