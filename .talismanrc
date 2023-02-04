@@ -1,6 +1,5 @@
 fileignoreconfig:
-- filename: .github/workflows/release.yml
-  checksum: d35b9b5eff0b02914a94dfd4e3ee247a2804fba05384a6974009a936875e66ad
+- filename: pom.xml
+  checksum: 08d41cfff35d0565740865f75cea2e780443734bb7876741ed6dc28acf453601
 version: ""
-
 

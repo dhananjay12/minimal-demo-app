@@ -45,9 +45,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
-          SONAR_HOST_URL: 'https://sonarcloud.io'
         run: |
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
