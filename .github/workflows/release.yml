@@ -40,9 +40,13 @@ jobs:
           settings-path: ${{ github.workspace }}
       # Make sure automatic scanning of the project in sonarcloud UI is disable. It can only do via pull or push
       - name: Sonar Cloud scan
+        env:
+          sonar.projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
+          sonar.organization: ${{ secrets.SONAR_ORG }}
+          sonar.host.url: https://sonarcloud.io
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
         run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-          -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.host.url=https://sonarcloud.io
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
   docker:
     needs: sonar
