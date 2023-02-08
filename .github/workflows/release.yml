@@ -10,6 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Initialize Java and Maven
         uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
       - name: Build with Maven
