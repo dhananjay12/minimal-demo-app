@@ -12,6 +12,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Initialize Java and Maven
         uses: dhananjay12/reusable-workflows/init-maven@main
       - name: Build with Maven
@@ -21,6 +23,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Initialize Java and Maven
         uses: dhananjay12/reusable-workflows/init-maven@main
       # Make sure automatic scanning of the project in sonarcloud UI is disable. It can only do via pull or push
@@ -37,6 +41,8 @@ jobs:
     needs: sonar
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Initialize Java and Maven
         uses: dhananjay12/reusable-workflows/init-maven@main
       - name: Prepare variables
