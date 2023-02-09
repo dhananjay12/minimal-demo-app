@@ -2,46 +2,17 @@
 name: Java CI with Maven
 
 on:
+  # To manually trigger
+  workflow_dispatch:
   push:
     branches:
       - master
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Initialize Java and Maven
-        uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
-      - name: Build with Maven
-        run: mvn clean verify
-
-  sonar:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Initialize Java and Maven
-        uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
-      # Make sure automatic scanning of the project in sonarcloud UI is disable. It can only do via pull or push
-      - name: Sonar Cloud scan
-        env:
-          # Needed to get some information about the pull request, if any
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-
-  docker:
-    needs: sonar
-    runs-on: ubuntu-latest
-    steps:
-      - name: Initialize Java and Maven
-        uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
-      - name: Prepare variables
-        id: vars
-        run: |
-          mvn -Dmaven.test.skip=true package jib:build -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }}
-
-
-
-
+  release:
+    uses: dhananjay12/reusable-workflows/.github/workflows/release.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_PASSWORD }}
