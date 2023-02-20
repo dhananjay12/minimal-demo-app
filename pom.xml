@@ -10,9 +10,22 @@
   </parent>
   <groupId>com.djcodes.spring</groupId>
   <artifactId>demo-app</artifactId>
-  <version>4.0.0</version>
+  <version>1.0.0-rc.0-SNAPSHOT</version>
   <name>demo-app</name>
   <description>Demo project for Spring Boot</description>
+
+  <scm>
+    <developerConnection>scm:git:git@github.com:dhananjay12/demo-app.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/dhananjay12/demo-app</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <java.version>17</java.version>
