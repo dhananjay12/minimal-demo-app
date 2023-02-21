@@ -15,7 +15,7 @@
   <description>Demo project for Spring Boot</description>
 
   <scm>
-    <developerConnection>scm:git:git@github.com:dhananjay12/demo-app.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/dhananjay12/demo-app.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
