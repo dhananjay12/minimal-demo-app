@@ -1,5 +1,5 @@
 
-name: Java CI with Maven
+name: Release RC on master push
 
 on:
   # To manually trigger
@@ -10,7 +10,7 @@ on:
 
 jobs:
   release:
-    uses: dhananjay12/reusable-workflows/.github/workflows/release.yml@main
+    uses: dhananjay12/reusable-workflows/.github/workflows/release-rc.yml@main
     secrets:
       REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
