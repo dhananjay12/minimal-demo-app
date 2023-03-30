@@ -1,0 +1,15 @@
+name: Release Published
+
+on:
+  release:
+    types: [prereleased,published]
+
+jobs:
+  check_pre_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check parameters
+        run: |
+          echo "Release tag: ${{ github.event.release.tag_name }}"
+          echo "Is a pre-release: ${{ github.event.release.prerelease }}"
+          echo "Is this a draft: ${{ github.event.release.draft}}
