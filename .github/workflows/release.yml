@@ -2,7 +2,7 @@ name: Release Published
 
 on:
   release:
-    types: [prereleased,published]
+    types: [published]
 
 jobs:
   check_pre_release:
@@ -12,4 +12,14 @@ jobs:
         run: |
           echo "Release tag: ${{ github.event.release.tag_name }}"
           echo "Is a pre-release: ${{ github.event.release.prerelease }}"
-          echo "Is this a draft: ${{ github.event.release.draft}}
+      - name: Initialize Java and Maven
+        uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
+        with:
+          java-version: 17
+          distribution: adopt
+      - name: Build with Maven
+        run: mvn clean verify
+      - name: Publish to GitHub Packages
+        run: mvn  --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
