@@ -17,9 +17,25 @@ jobs:
         with:
           java-version: 17
           distribution: adopt
-      - name: Build with Maven
-        run: mvn clean verify
-      - name: Publish to GitHub Packages
-        run: mvn  --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract version from passed tag
+        id: extract-versions
+        uses: dhananjay12/reusable-workflows/.github/actions/extract-versions@main
+        with:
+          release-tag: ${{ github.event.release.tag_name }}
+      - name: Echo extracted versions
+        run: |
+          echo "pom_current_version: ${{ steps.extract-versions.outputs.pom_current_version }}"
+          echo "pom_major: ${{ steps.extract-versions.outputs.pom_major }}"
+          echo "pom_minor: ${{ steps.extract-versions.outputs.pom_minor }}"
+          echo "pom_patch: ${{ steps.extract-versions.outputs.pom_patch }}"
+          echo "pom_rc: ${{ steps.extract-versions.outputs.pom_rc }}"
+      # - name: Set Version passed
+      #   run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}"
+      # - name: Build with Maven
+      #   run: mvn clean verify
+      # - name: Publish to GitHub Packages
+      #   # Publish to github packages skipping tests
+      #   run: mvn deploy -DskipTests
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Prepare next 
