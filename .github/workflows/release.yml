@@ -29,13 +29,28 @@ jobs:
           echo "pom_minor: ${{ steps.extract-versions.outputs.pom_minor }}"
           echo "pom_patch: ${{ steps.extract-versions.outputs.pom_patch }}"
           echo "pom_rc: ${{ steps.extract-versions.outputs.pom_rc }}"
-      # - name: Set Version passed
-      #   run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}"
-      # - name: Build with Maven
-      #   run: mvn clean verify
-      # - name: Publish to GitHub Packages
-      #   # Publish to github packages skipping tests
-      #   run: mvn deploy -DskipTests
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Prepare next 
+      - name: Set Version passed
+        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}"
+      - name: Build with Maven
+        run: mvn clean verify
+      - name: Publish to GitHub Packages
+        # Publish to github packages skipping tests
+        run: mvn deploy -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare Next development version
+        id: prepare-next-version
+        env:
+          MAJOR: ${{ steps.extract-versions.outputs.pom_major }}
+          MINOR: ${{ steps.extract-versions.outputs.pom_minor }}
+          PATCH: ${{ steps.extract-versions.outputs.pom_patch }}
+          RC: ${{ steps.extract-versions.outputs.pom_rc }}
+        run: |
+          # Set next version
+          mvn versions:set -DnewVersion=${MAJOR}.${MINOR}.${PATCH}-rc.$((RC+1))-SNAPSHOT
+          # Commit and push changes
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add pom.xml
+          git commit -m "Prepare next development version"
+          git push
