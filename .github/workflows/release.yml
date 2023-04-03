@@ -44,6 +44,7 @@ jobs:
       - name: Prepare Next development version
         id: prepare-next-version
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAJOR: ${{ steps.extract-versions.outputs.pom_major }}
           MINOR: ${{ steps.extract-versions.outputs.pom_minor }}
           PATCH: ${{ steps.extract-versions.outputs.pom_patch }}
