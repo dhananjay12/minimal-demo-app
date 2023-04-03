@@ -38,7 +38,7 @@ jobs:
         run: mvn clean verify
       - name: Publish to GitHub Packages
         # Publish to github packages skipping tests
-        run: mvn deploy -DskipTests
+        run: mvn deploy -DskipTests -s $GITHUB_WORKSPACE/settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare Next development version
