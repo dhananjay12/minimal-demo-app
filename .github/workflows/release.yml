@@ -7,6 +7,9 @@ on:
 jobs:
   check_pre_release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Check parameters
         run: |
