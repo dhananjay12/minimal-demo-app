@@ -30,7 +30,7 @@ jobs:
           echo "pom_patch: ${{ steps.extract-versions.outputs.pom_patch }}"
           echo "pom_rc: ${{ steps.extract-versions.outputs.pom_rc }}"
       - name: Set Version passed
-        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}"
+        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Build with Maven
         run: mvn clean verify
       - name: Publish to GitHub Packages
