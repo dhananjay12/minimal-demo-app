@@ -1,0 +1,20 @@
+name: Main/master push/merge workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+      - release/*
+
+jobs:
+  push:
+    uses: dhananjay12/reusable-workflows/.github/workflows/release@main
+    secrets:
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      JFROG_URL: ${{ secrets.JFROG_URL }}
+      JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+      JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_PASSWORD }}
