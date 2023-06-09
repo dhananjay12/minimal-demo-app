@@ -1,60 +1,18 @@
 name: Release Published
 
 on:
+  workflow_dispatch:
   release:
-    types: [published]
+    types:
+      - published
 
 jobs:
-  check_pre_release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Check parameters
-        run: |
-          echo "Release tag: ${{ github.event.release.tag_name }}"
-          echo "Is a pre-release: ${{ github.event.release.prerelease }}"
-      - name: Initialize Java and Maven
-        uses: dhananjay12/reusable-workflows/.github/actions/init-maven@main
-        with:
-          java-version: 17
-          distribution: adopt
-      - name: Extract version from passed tag
-        id: extract-versions
-        uses: dhananjay12/reusable-workflows/.github/actions/extract-versions@main
-        with:
-          release-tag: ${{ github.event.release.tag_name }}
-      - name: Echo extracted versions
-        run: |
-          echo "pom_current_version: ${{ steps.extract-versions.outputs.pom_current_version }}"
-          echo "pom_major: ${{ steps.extract-versions.outputs.pom_major }}"
-          echo "pom_minor: ${{ steps.extract-versions.outputs.pom_minor }}"
-          echo "pom_patch: ${{ steps.extract-versions.outputs.pom_patch }}"
-          echo "pom_rc: ${{ steps.extract-versions.outputs.pom_rc }}"
-      - name: Set Version passed
-        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
-      - name: Build with Maven
-        run: mvn clean verify
-      - name: Publish to GitHub Packages
-        # Publish to github packages skipping tests
-        run: mvn deploy -DskipTests -s $GITHUB_WORKSPACE/settings.xml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare Next development version
-        id: prepare-next-version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAJOR: ${{ steps.extract-versions.outputs.pom_major }}
-          MINOR: ${{ steps.extract-versions.outputs.pom_minor }}
-          PATCH: ${{ steps.extract-versions.outputs.pom_patch }}
-          RC: ${{ steps.extract-versions.outputs.pom_rc }}
-        run: |
-          # Set next version
-          mvn versions:set -DnewVersion=${MAJOR}.${MINOR}.${PATCH}-rc.$((RC+1))-SNAPSHOT
-          # Commit and push changes
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add pom.xml
-          git commit -m "Prepare next development version"
-          git push --set-upstream origin ${{ github.ref }}
+  push:
+    uses: dhananjay12/reusable-workflows/.github/workflows/build.yml@main
+    secrets:
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      JFROG_URL: ${{ secrets.JFROG_URL }}
+      JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+      JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_PASSWORD }}
