@@ -1,4 +1,4 @@
-# Minimal Demo App
+# Minimal Demo App 
 
 [![Build Status](https://travis-ci.org/dhananjay12/demo-app.svg?branch=master)](https://travis-ci.org/dhananjay12/demo-app)
 [![Docker](https://img.shields.io/docker/pulls/dhananjay12/demo-app)](https://hub.docker.com/repository/docker/dhananjay12/demo-app)
